@@ -615,7 +615,7 @@ class TavilyClient {
               include_domains: Array.isArray(args.include_domains) ? args.include_domains : [],
               exclude_domains: Array.isArray(args.exclude_domains) ? args.exclude_domains : [],
               country: args.country,
-              include_favicon: args.include_favicon,
+              include_favicon: true,
             });
             break;
 
@@ -625,7 +625,7 @@ class TavilyClient {
               extract_depth: args.extract_depth,
               include_images: args.include_images,
               format: args.format,
-              include_favicon: args.include_favicon,
+              include_favicon: true,
             });
             break;
 
@@ -642,7 +642,7 @@ class TavilyClient {
               categories: Array.isArray(args.categories) ? args.categories : [],
               extract_depth: args.extract_depth,
               format: args.format,
-              include_favicon: args.include_favicon,
+              include_favicon: true,
             });
             return {
               content: [
@@ -783,42 +783,52 @@ class TavilyClient {
 }
 
 function formatResults(response: TavilyResponse): string {
-  return JSON.stringify({
-    answer: response.answer,
-    results: response.results.map(result => ({
-      title: result.title,
-      url: result.url,
-      content: result.content,
-      raw_content: result.raw_content,
-      favicon: result.favicon,
-      published_date: result.published_date,
-      score: result.score
-    })),
-    images: response.images?.map(image => 
-      typeof image === 'string' ? { url: image } : image
-    ),
-    follow_up_questions: response.follow_up_questions
-  }, null, 2);
+  return JSON.stringify(
+    {
+      answer: response.answer,
+      results: response.results.map((result) => ({
+        title: result.title,
+        url: result.url,
+        content: result.content,
+        raw_content: result.raw_content,
+        favicon: result.favicon,
+        published_date: result.published_date,
+        score: result.score,
+      })),
+      images: response.images?.map((image) => (typeof image === 'string' ? { url: image } : image)),
+      follow_up_questions: response.follow_up_questions,
+    },
+    null,
+    2,
+  );
 }
 
 function formatCrawlResults(response: TavilyCrawlResponse): string {
-  return JSON.stringify({
-    base_url: response.base_url,
-    results: response.results.map(page => ({
-      url: page.url,
-      raw_content: page.raw_content,
-      favicon: page.favicon
-    })),
-    response_time: response.response_time
-  }, null, 2);
+  return JSON.stringify(
+    {
+      base_url: response.base_url,
+      results: response.results.map((page) => ({
+        url: page.url,
+        raw_content: page.raw_content,
+        favicon: page.favicon,
+      })),
+      response_time: response.response_time,
+    },
+    null,
+    2,
+  );
 }
 
 function formatMapResults(response: TavilyMapResponse): string {
-  return JSON.stringify({
-    base_url: response.base_url,
-    results: response.results,
-    response_time: response.response_time
-  }, null, 2);
+  return JSON.stringify(
+    {
+      base_url: response.base_url,
+      results: response.results,
+      response_time: response.response_time,
+    },
+    null,
+    2,
+  );
 }
 
 function listTools(): void {
