@@ -783,7 +783,6 @@ class TavilyClient {
 }
 
 function formatResults(response: TavilyResponse): string {
-  // 将API响应转换为JSON格式
   return JSON.stringify({
     answer: response.answer,
     results: response.results.map(result => ({
@@ -803,7 +802,6 @@ function formatResults(response: TavilyResponse): string {
 }
 
 function formatCrawlResults(response: TavilyCrawlResponse): string {
-  // 将爬取结果转换为JSON格式
   return JSON.stringify({
     base_url: response.base_url,
     results: response.results.map(page => ({
@@ -816,7 +814,6 @@ function formatCrawlResults(response: TavilyCrawlResponse): string {
 }
 
 function formatMapResults(response: TavilyMapResponse): string {
-  // 将站点地图结果转换为JSON格式
   return JSON.stringify({
     base_url: response.base_url,
     results: response.results,
