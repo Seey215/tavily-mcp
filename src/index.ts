@@ -406,7 +406,7 @@ class TavilyClient {
                 enum: ['markdown', 'text'],
                 description:
                   'The format of the extracted web page content. markdown returns content in markdown format. text returns plain text and may increase latency.',
-                default: 'markdown',
+                default: 'text',
               },
               include_favicon: {
                 type: 'boolean',
@@ -497,10 +497,10 @@ class TavilyClient {
               },
               format: {
                 type: 'string',
-                enum: ['markdown', 'text'],
+                enum: ['text'],
                 description:
-                  'The format of the extracted web page content. markdown returns content in markdown format. text returns plain text and may increase latency.',
-                default: 'markdown',
+                  'The format of the extracted web page content. text returns plain text and may increase latency.',
+                default: 'text',
               },
               include_favicon: {
                 type: 'boolean',
@@ -782,85 +782,46 @@ class TavilyClient {
   }
 }
 
-// TODO 修改字符串格式为JSON格式
 function formatResults(response: TavilyResponse): string {
-  // Format API response into human-readable text
-  const output: string[] = [];
-
-  // Include answer if available
-  if (response.answer) {
-    output.push(`Answer: ${response.answer}`);
-  }
-
-  // Format detailed search results
-  output.push('Detailed Results:');
-  response.results.forEach((result) => {
-    output.push(`\nTitle: ${result.title}`);
-    output.push(`URL: ${result.url}`);
-    output.push(`Content: ${result.content}`);
-    if (result.raw_content) {
-      output.push(`Raw Content: ${result.raw_content}`);
-    }
-    if (result.favicon) {
-      output.push(`Favicon: ${result.favicon}`);
-    }
-  });
-
-  // Add images section if available
-  if (response.images && response.images.length > 0) {
-    output.push('\nImages:');
-    response.images.forEach((image, index) => {
-      if (typeof image === 'string') {
-        output.push(`\n[${index + 1}] URL: ${image}`);
-      } else {
-        output.push(`\n[${index + 1}] URL: ${image.url}`);
-        if (image.description) {
-          output.push(`   Description: ${image.description}`);
-        }
-      }
-    });
-  }
-
-  return output.join('\n');
+  // 将API响应转换为JSON格式
+  return JSON.stringify({
+    answer: response.answer,
+    results: response.results.map(result => ({
+      title: result.title,
+      url: result.url,
+      content: result.content,
+      raw_content: result.raw_content,
+      favicon: result.favicon,
+      published_date: result.published_date,
+      score: result.score
+    })),
+    images: response.images?.map(image => 
+      typeof image === 'string' ? { url: image } : image
+    ),
+    follow_up_questions: response.follow_up_questions
+  }, null, 2);
 }
 
-// TODO 修改字符串格式为JSON格式
 function formatCrawlResults(response: TavilyCrawlResponse): string {
-  const output: string[] = [];
-
-  output.push(`Crawl Results:`);
-  output.push(`Base URL: ${response.base_url}`);
-
-  output.push('\nCrawled Pages:');
-  response.results.forEach((page, index) => {
-    output.push(`\n[${index + 1}] URL: ${page.url}`);
-    if (page.raw_content) {
-      // Truncate content if it's too long
-      const contentPreview =
-        page.raw_content.length > 200 ? page.raw_content.substring(0, 200) + '...' : page.raw_content;
-      output.push(`Content: ${contentPreview}`);
-    }
-    if (page.favicon) {
-      output.push(`Favicon: ${page.favicon}`);
-    }
-  });
-
-  return output.join('\n');
+  // 将爬取结果转换为JSON格式
+  return JSON.stringify({
+    base_url: response.base_url,
+    results: response.results.map(page => ({
+      url: page.url,
+      raw_content: page.raw_content,
+      favicon: page.favicon
+    })),
+    response_time: response.response_time
+  }, null, 2);
 }
 
-// TODO 修改字符串格式为JSON格式
 function formatMapResults(response: TavilyMapResponse): string {
-  const output: string[] = [];
-
-  output.push(`Site Map Results:`);
-  output.push(`Base URL: ${response.base_url}`);
-
-  output.push('\nMapped Pages:');
-  response.results.forEach((page, index) => {
-    output.push(`\n[${index + 1}] URL: ${page}`);
-  });
-
-  return output.join('\n');
+  // 将站点地图结果转换为JSON格式
+  return JSON.stringify({
+    base_url: response.base_url,
+    results: response.results,
+    response_time: response.response_time
+  }, null, 2);
 }
 
 function listTools(): void {
