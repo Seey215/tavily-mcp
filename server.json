@@ -1,6 +1,6 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-10-17/server.schema.json",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "name": "io.github.Seey215/tavily-mcp",
   "title": "Tavily MCP Server",
   "description": "MCP server for advanced web search using Tavily API.",
@@ -12,7 +12,7 @@
     {
       "registryType": "npm",
       "identifier": "@toolsdk.ai/tavily-mcp",
-      "version": "0.2.8",
+      "version": "0.2.9",
       "transport": {
         "type": "stdio"
       },
