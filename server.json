@@ -1,0 +1,43 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-10-17/server.schema.json",
+  "version": "0.2.8",
+  "name": "io.github.Seey215/tavily-mcp",
+  "title": "Tavily MCP Server",
+  "description": "MCP server for advanced web search using Tavily API.",
+  "repository": {
+    "url": "https://github.com/Seey215/tavily-mcp",
+    "source": "github"
+  },
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "@toolsdk.ai/tavily-mcp",
+      "version": "0.2.8",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "description": "Your TAVILY_API_KEY",
+          "isRequired": true,
+          "format": "string",
+          "isSecret": true,
+          "name": "TAVILY_API_KEY"
+        }
+      ]
+    }
+  ],
+  "homepage": "https://github.com/Seey215/tavily-mcp",
+  "source_code": "https://github.com/Seey215/tavily-mcp",
+  "keywords": [
+    "tavily",
+    "web-search",
+    "search",
+    "mcp",
+    "model-context-protocol"
+  ],
+  "categories": [
+    "search",
+    "web"
+  ]
+}
